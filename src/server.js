@@ -7,6 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var skuRoutes = require('./SKU/sku-routes');
+var stripeRoutes = require('./stripe/stripe-routes');
 
 var server = express();
 
@@ -23,6 +24,7 @@ server.use(express.static(path.join(__dirname, 'public')));
 server.use('/', indexRouter);
 server.use('/users', usersRouter);
 server.use('/sku', skuRoutes);
+server.use('/stripe', stripeRoutes);
 
 // catch 404 and forward to error handler
 server.use(function(req, res, next) {
