@@ -3,16 +3,19 @@ const { STRIPE_SECRET_KEY } = require('../config')
 const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 const calculateOrderAmount = items => {
-    // Replace this constant with a calculation of the order's amount
-    // Calculate the order total on the server to prevent
-    // people from directly manipulating the amount on the client
-    return 1400;
+    //look up item price in DB and use that
+    var total = 0;
+    for ( var i of items ){
+        total += i.price * i.qty;
+    }
+    return total * 100; //stripe expects number of pennies, so multiply by 100
 };
 
 exports.createPaymentIntent = async function( { items, currency } )  {
     // Create a PaymentIntent with the order amount and currency
+    const amount = calculateOrderAmount(items)
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount(items),
+        amount: amount,
         currency: currency
     });
     return paymentIntent;
