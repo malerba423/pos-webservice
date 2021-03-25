@@ -4,11 +4,8 @@ const stripe = require("stripe")(STRIPE_SECRET_KEY);
 
 const calculateOrderAmount = items => {
     //look up item price in DB and use that
-    var total = 0;
-    for ( var i of items ){
-        total += i.price * i.qty;
-    }
-    return total * 100; //stripe expects number of pennies, so multiply by 100
+    const dollarSum = items.reduce((a, b) => a + (b.price || 0), 0)
+    return dollarSum * 100; //stripe expects number of pennies, so multiply by 100
 };
 
 exports.createPaymentIntent = async function( { items, currency } )  {
