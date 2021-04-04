@@ -1,5 +1,5 @@
-const { STRIPE_PUBLIC_KEY } = require("../config");
-const stripeService = require("./stripe-service");
+const { STRIPE_PUBLIC_KEY } = require('../config');
+const stripeService = require('./stripe-service');
 
 exports.getConnectionToken = async function (req, res) {
   try {
@@ -7,7 +7,7 @@ exports.getConnectionToken = async function (req, res) {
     res.send({ secret: connectionToken.secret });
   } catch (e) {
     return res.status(500).json({
-      message: "An error occured during the getConnectionToken process",
+      message: 'An error occured during the getConnectionToken process',
     });
   }
 };
@@ -28,7 +28,7 @@ exports.createPaymentIntent = async function (req, res) {
     });
   } catch (e) {
     return res.status(500).json({
-      message: "An error occured during the createPaymentIntent process",
+      message: 'An error occured during the createPaymentIntent process',
     });
   }
 };
@@ -38,9 +38,7 @@ exports.createPaymentIntentWithCardPresent = async function (req, res) {
   try {
     const amount = stripeService.calculateOrderAmount(items);
     const tipAmount = (tip || 0) * 100;
-    const paymentIntent = await stripeService.createPaymentIntentWithCardPresent(
-      { amount, tipAmount }
-    );
+    const paymentIntent = await stripeService.createPaymentIntentWithCardPresent({ amount, tipAmount });
     // Send public key and PaymentIntent details to client
     res.send({
       publicKey: STRIPE_PUBLIC_KEY,
@@ -48,8 +46,7 @@ exports.createPaymentIntentWithCardPresent = async function (req, res) {
     });
   } catch (e) {
     return res.status(500).json({
-      message:
-        "An error occured during the createPaymentIntentWithCardPresent process",
+      message: 'An error occured during the createPaymentIntentWithCardPresent process',
     });
   }
 };

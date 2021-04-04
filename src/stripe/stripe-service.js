@@ -1,5 +1,5 @@
-const { STRIPE_SECRET_KEY } = require("../config");
-const stripe = require("stripe")(STRIPE_SECRET_KEY);
+const { STRIPE_SECRET_KEY } = require('../config');
+const stripe = require('stripe')(STRIPE_SECRET_KEY);
 
 exports.calculateOrderAmount = function (items) {
   //TODO: look up item price in DB and use that rather than trusting price data sent from client
@@ -9,13 +9,13 @@ exports.calculateOrderAmount = function (items) {
 
 exports.createLocation = async function () {
   const location = await stripe.terminal.locations.create({
-    display_name: "HQ",
+    display_name: 'HQ',
     address: {
-      line1: "3814 Lakeway Dr",
-      city: "Bellingham",
-      state: "WA",
-      country: "US",
-      postal_code: "98229",
+      line1: '3814 Lakeway Dr',
+      city: 'Bellingham',
+      state: 'WA',
+      country: 'US',
+      postal_code: '98229',
     },
   });
   return location;
@@ -25,22 +25,19 @@ exports.createPaymentIntent = async function ({ amount, tipAmount }) {
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount + (tipAmount || 0),
-    currency: "usd",
+    currency: 'usd',
   });
   return paymentIntent;
 };
 
-exports.createPaymentIntentWithCardPresent = async function ({
-  amount,
-  tipAmount,
-}) {
+exports.createPaymentIntentWithCardPresent = async function ({ amount, tipAmount }) {
   // For Terminal payments, the 'payment_method_types' parameter must include
   // 'card_present' and the 'capture_method' must be set to 'manual'
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amount + (tipAmount || 0),
-    currency: "usd",
-    payment_method_types: ["card_present"],
-    capture_method: "manual",
+    currency: 'usd',
+    payment_method_types: ['card_present'],
+    capture_method: 'manual',
   });
   return paymentIntent;
 };

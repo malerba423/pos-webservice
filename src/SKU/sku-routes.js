@@ -4,7 +4,7 @@ var express = require('express');
 
 var router = express.Router();
 
-var skuController = require('./sku-controller')
+var skuController = require('./sku-controller');
 
 router.get('/get-all-skus', skuController.getAllSKUs);
 //router.post('/add-new-sku', requireAuth, requireAccount, skuController.addNewSKU);
