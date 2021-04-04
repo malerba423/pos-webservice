@@ -13,10 +13,14 @@ exports.getConnectionToken = async function (req, res) {
 };
 
 exports.createPaymentIntent = async function (req, res) {
-  const { items } = req.body;
+  const { items, tip } = req.body;
   try {
     const amount = stripeService.calculateOrderAmount(items);
-    const paymentIntent = await stripeService.createPaymentIntent({ amount });
+    const tipAmount = (tip || 0) * 100;
+    const paymentIntent = await stripeService.createPaymentIntent({
+      amount,
+      tipAmount,
+    });
     // Send public key and PaymentIntent details to client
     res.send({
       publicKey: STRIPE_PUBLIC_KEY,
@@ -30,11 +34,12 @@ exports.createPaymentIntent = async function (req, res) {
 };
 
 exports.createPaymentIntentWithCardPresent = async function (req, res) {
-  const { items } = req.body;
+  const { items, tip } = req.body;
   try {
     const amount = stripeService.calculateOrderAmount(items);
+    const tipAmount = (tip || 0) * 100;
     const paymentIntent = await stripeService.createPaymentIntentWithCardPresent(
-      { amount }
+      { amount, tipAmount }
     );
     // Send public key and PaymentIntent details to client
     res.send({

@@ -21,20 +21,23 @@ exports.createLocation = async function () {
   return location;
 };
 
-exports.createPaymentIntent = async function ({ amount }) {
+exports.createPaymentIntent = async function ({ amount, tipAmount }) {
   // Create a PaymentIntent with the order amount and currency
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
+    amount: amount + (tipAmount || 0),
     currency: "usd",
   });
   return paymentIntent;
 };
 
-exports.createPaymentIntentWithCardPresent = async function ({ amount }) {
+exports.createPaymentIntentWithCardPresent = async function ({
+  amount,
+  tipAmount,
+}) {
   // For Terminal payments, the 'payment_method_types' parameter must include
   // 'card_present' and the 'capture_method' must be set to 'manual'
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: amount,
+    amount: amount + (tipAmount || 0),
     currency: "usd",
     payment_method_types: ["card_present"],
     capture_method: "manual",
