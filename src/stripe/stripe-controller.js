@@ -23,8 +23,8 @@ exports.createPaymentIntent = async function (req, res) {
     });
     // Send public key and PaymentIntent details to client
     res.send({
-      publicKey: STRIPE_PUBLIC_KEY,
-      clientSecret: paymentIntent.client_secret,
+      public_key: STRIPE_PUBLIC_KEY,
+      client_secret: paymentIntent.client_secret,
     });
   } catch (e) {
     return res.status(500).json({
@@ -33,20 +33,32 @@ exports.createPaymentIntent = async function (req, res) {
   }
 };
 
-exports.createPaymentIntentWithCardPresent = async function (req, res) {
-  const { items, tip } = req.body;
+exports.capturePayment = async function (req, res) {
+  const { paymentIntentId } = req.body;
   try {
-    const amount = stripeService.calculateOrderAmount(items);
-    const tipAmount = (tip || 0) * 100;
-    const paymentIntent = await stripeService.createPaymentIntentWithCardPresent({ amount, tipAmount });
-    // Send public key and PaymentIntent details to client
-    res.send({
-      publicKey: STRIPE_PUBLIC_KEY,
-      clientSecret: paymentIntent.client_secret,
-    });
+    const paymentIntent = await stripeService.capturePayment({ paymentIntentId });
+    res.send({ paymentIntent });
   } catch (e) {
     return res.status(500).json({
-      message: 'An error occured during the createPaymentIntentWithCardPresent process',
+      message: 'An error occured during the capturePayment process',
     });
   }
 };
+
+// exports.createPaymentIntentWithCardPresent = async function (req, res) {
+//   const { items, tip } = req.body;
+//   try {
+//     const amount = stripeService.calculateOrderAmount(items);
+//     const tipAmount = (tip || 0) * 100;
+//     const paymentIntent = await stripeService.createPaymentIntentWithCardPresent({ amount, tipAmount });
+//     // Send public key and PaymentIntent details to client
+//     res.send({
+//       publicKey: STRIPE_PUBLIC_KEY,
+//       clientSecret: paymentIntent.client_secret,
+//     });
+//   } catch (e) {
+//     return res.status(500).json({
+//       message: 'An error occured during the createPaymentIntentWithCardPresent process',
+//     });
+//   }
+// };
