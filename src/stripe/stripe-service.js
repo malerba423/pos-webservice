@@ -37,17 +37,17 @@ exports.capturePayment = async function ({ paymentIntentId }) {
   return paymentIntent;
 };
 
-// exports.createPaymentIntentWithCardPresent = async function ({ amount, tipAmount }) {
-//   // For Terminal payments, the 'payment_method_types' parameter must include
-//   // 'card_present' and the 'capture_method' must be set to 'manual'
-//   const paymentIntent = await stripe.paymentIntents.create({
-//     amount: amount + (tipAmount || 0),
-//     currency: 'usd',
-//     payment_method_types: ['card_present'],
-//     capture_method: 'manual',
-//   });
-//   return paymentIntent;
-// };
+exports.refundPayment = async function ({ paymentIntentId, amount }) {
+  const payload = {
+    payment_intent: paymentIntentId,
+    amount: amount,
+  };
+  if (!amount) {
+    delete payload.amount;
+  }
+  const refund = await stripe.refunds.create(payload);
+  return refund;
+};
 
 //be sure to protect this behind authentication middleware
 exports.getConnectionToken = async function () {

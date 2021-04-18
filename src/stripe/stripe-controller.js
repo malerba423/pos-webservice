@@ -45,20 +45,14 @@ exports.capturePayment = async function (req, res) {
   }
 };
 
-// exports.createPaymentIntentWithCardPresent = async function (req, res) {
-//   const { items, tip } = req.body;
-//   try {
-//     const amount = stripeService.calculateOrderAmount(items);
-//     const tipAmount = (tip || 0) * 100;
-//     const paymentIntent = await stripeService.createPaymentIntentWithCardPresent({ amount, tipAmount });
-//     // Send public key and PaymentIntent details to client
-//     res.send({
-//       publicKey: STRIPE_PUBLIC_KEY,
-//       clientSecret: paymentIntent.client_secret,
-//     });
-//   } catch (e) {
-//     return res.status(500).json({
-//       message: 'An error occured during the createPaymentIntentWithCardPresent process',
-//     });
-//   }
-// };
+exports.refundPayment = async function (req, res) {
+  const { paymentIntentId, amount } = req.body;
+  try {
+    const refund = await stripeService.refundPayment({ paymentIntentId, amount });
+    res.send({ refund });
+  } catch (e) {
+    return res.status(500).json({
+      message: 'An error occured during the refundPayment process',
+    });
+  }
+};
