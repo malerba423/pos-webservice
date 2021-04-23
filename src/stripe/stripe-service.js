@@ -21,14 +21,16 @@ exports.createLocation = async function () {
   return location;
 };
 
-exports.createPaymentIntent = async function ({ amount, tipAmount }) {
-  // Create a PaymentIntent with the order amount and currency
-  const paymentIntent = await stripe.paymentIntents.create({
+exports.createPaymentIntent = async function ({ amount, tipAmount, isCardPresent }) {
+  const args = {
     amount: amount + (tipAmount || 0),
     currency: 'usd',
-    payment_method_types: ['card_present'],
-    capture_method: 'manual',
-  });
+  };
+  if (isCardPresent) {
+    args.payment_method_types = ['card_present'];
+    args.capture_method = 'manual';
+  }
+  const paymentIntent = await stripe.paymentIntents.create(args);
   return paymentIntent;
 };
 
