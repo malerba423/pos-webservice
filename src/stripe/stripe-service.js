@@ -1,10 +1,12 @@
-const { STRIPE_SECRET_KEY } = require('../config');
+const { STRIPE_SECRET_KEY, SALES_TAX_RATE } = require('../config');
 const stripe = require('stripe')(STRIPE_SECRET_KEY);
 
 exports.calculateOrderAmount = function (items) {
   //TODO: look up item price in DB and use that rather than trusting price data sent from client
   const dollarSum = items.reduce((a, b) => a + (b.price || 0), 0);
-  return dollarSum * 100; //stripe expects number of pennies, so multiply by 100
+  const dollarSumAfterTax = dollarSum * (1 + Number(SALES_TAX_RATE));
+  const penniesSumAfterTax = Math.round(dollarSumAfterTax * 100); //stripe expects number of pennies, so multiply by 100
+  return penniesSumAfterTax;
 };
 
 exports.createLocation = async function () {
