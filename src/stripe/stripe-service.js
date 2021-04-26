@@ -41,6 +41,18 @@ exports.capturePayment = async function ({ paymentIntentId }) {
   return paymentIntent;
 };
 
+async function getAmountStillAvailableForRefund({ paymentIntentId }) {
+  const intent = await stripe.paymentIntents.retrieve(paymentIntentId);
+  const existingRefunds = await stripe.refunds.list({ payment_intent: paymentIntentId });
+  const intentAmount = intent && intent.amount ? intent.amount : 0;
+  const alreadyRefundedAmount =
+    existingRefunds && existingRefunds.data && existingRefunds.data.length
+      ? existingRefunds.data.reduce((sum, refundObj) => sum + (refundObj.amount || 0), 0)
+      : 0;
+  const amountStillAvailableForRefund = intentAmount - alreadyRefundedAmount;
+  return amountStillAvailableForRefund;
+}
+
 exports.refundPayment = async function ({ paymentIntentId, amount }) {
   const payload = {
     payment_intent: paymentIntentId,
@@ -49,6 +61,12 @@ exports.refundPayment = async function ({ paymentIntentId, amount }) {
   if (!amount) {
     delete payload.amount;
   }
+
+  const amountAvailableForRefund = await getAmountStillAvailableForRefund({ paymentIntentId });
+  if (amount > amountAvailableForRefund) {
+    payload.amount = amountAvailableForRefund;
+  }
+
   const refund = await stripe.refunds.create(payload);
   return refund;
 };
