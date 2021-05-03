@@ -5,25 +5,24 @@ const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
 const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
 
+const appCorsOptions = {
+  origin: REACT_WEBAPP_BASE_URL,
+};
+const socketCorsOptions = {
+  cors: true,
+  origins: [REACT_WEBAPP_BASE_URL],
+};
+
 const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  cors({
-    origin: REACT_WEBAPP_BASE_URL,
-  }),
-);
+app.use(cors(appCorsOptions));
 app.use('/stripe', stripeRoutes);
 
 //set up server and socket
-const server = app.listen(PORT, () => {
-  console.log('Listening on port: ' + PORT);
-});
-const io = require('socket.io')(server, {
-  cors: true,
-  origins: [REACT_WEBAPP_BASE_URL],
-});
+const server = app.listen(PORT, () => console.log('Listening on port: ' + PORT));
+const io = require('socket.io')(server, socketCorsOptions);
 
 //socket handling
 io.on('connection', function (socket) {
