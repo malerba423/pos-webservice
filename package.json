@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./src/server.js"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -14,6 +14,7 @@
     "knex": "^0.95.2",
     "morgan": "~1.9.1",
     "pg": "^8.5.1",
+    "socket.io": "^4.0.1",
     "stripe": "^8.138.0"
   }
 }
