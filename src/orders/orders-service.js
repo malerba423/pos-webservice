@@ -29,3 +29,8 @@ exports.getOrdersToday = async function () {
   const result = await ordersRepo.getOrdersToday();
   return result;
 };
+
+exports.getOrder = async function ({ order }) {
+  const result = await ordersRepo.getOrder({ order });
+  return result;
+};

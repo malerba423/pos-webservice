@@ -14,7 +14,12 @@ module.exports = function ({ socket, io }) {
 
   socket.on('orders/update_order', async (order) => {
     await ordersService.updateOrder({ order });
-    io.sockets.emit('orders/requery_initial_data');
-    io.sockets.emit('order/order_updated', order);
+    io.sockets.emit('orders/requery_initial_data'); //update orders list
+    io.sockets.emit('order/order_data', order); //update individual order
+  });
+
+  socket.on('orders/query_order_detail', async (order) => {
+    const orderFromDB = await ordersService.getOrder({ order });
+    io.sockets.emit('order/order_data', orderFromDB);
   });
 };
