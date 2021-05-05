@@ -4,7 +4,7 @@ const cors = require('cors');
 const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
 const authRoutes = require('./auth/auth-routes');
-const { NODE_ENV, DEV_HOST, PORT, REACT_WEBAPP_BASE_URL } = require('./config');
+const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
 
 const appCorsOptions = {
   origin: REACT_WEBAPP_BASE_URL,
@@ -27,10 +27,11 @@ app.use('/stripe', stripeRoutes);
 app.use('/auth', authRoutes);
 
 //set up server and socket
-const server =
-  NODE_ENV == 'local_development'
-    ? app.listen(PORT, DEV_HOST, () => console.log('Listening on port: ' + PORT))
-    : app.listen(PORT, () => console.log('Listening on port: ' + PORT));
+// const server =
+//   NODE_ENV == 'local_development'
+//     ? app.listen(PORT, DEV_HOST, () => console.log('Listening on port: ' + PORT))
+//     : app.listen(PORT, () => console.log('Listening on port: ' + PORT));
+const server = app.listen(PORT, () => console.log('Listening on port: ' + PORT));
 
 const io = require('socket.io')(server, socketCorsOptions);
 

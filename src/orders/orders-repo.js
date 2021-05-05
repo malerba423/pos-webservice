@@ -1,11 +1,12 @@
 const db = require('../database');
+const { ORDER_STATUS } = require('../config');
 
 function mapOrderGoingIntoDB(order) {
   return { ...order, items: JSON.stringify(order.items), tip: JSON.stringify(order.tip) };
 }
 
 exports.addNewOrder = async function ({ order }) {
-  return await db('orders').insert(mapOrderGoingIntoDB(order));
+  return (await db('orders').insert(mapOrderGoingIntoDB(order)).returning('*'))?.[0];
 };
 
 exports.updateOrder = async function ({ order }) {
@@ -14,6 +15,13 @@ exports.updateOrder = async function ({ order }) {
 
 exports.getOrdersToday = async function () {
   const res = await db('orders').whereRaw('inserted_at >= now()::date');
+  return res;
+};
+
+exports.getActiveOrdersTodaySorted = async function () {
+  const res = await db('orders')
+    .whereRaw('order_status = :status_new and inserted_at >= now()::date', { status_new: ORDER_STATUS.NEW })
+    .orderBy('inserted_at', 'asc');
   return res;
 };
 

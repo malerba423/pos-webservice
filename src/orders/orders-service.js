@@ -30,6 +30,11 @@ exports.getOrdersToday = async function () {
   return result;
 };
 
+exports.getActiveOrdersTodaySorted = async function () {
+  const result = await ordersRepo.getActiveOrdersTodaySorted();
+  return result;
+};
+
 exports.getOrder = async function ({ order }) {
   const result = await ordersRepo.getOrder({ order });
   return result;
