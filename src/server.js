@@ -3,6 +3,7 @@ const cors = require('cors');
 //const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
+const ordersRoutes = require('./orders/orders-routes');
 const authRoutes = require('./auth/auth-routes');
 const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(appCorsOptions));
 app.use('/stripe', stripeRoutes);
+app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 
 //set up server and socket
@@ -34,6 +36,9 @@ app.use('/auth', authRoutes);
 const server = app.listen(PORT, () => console.log('Listening on port: ' + PORT));
 
 const io = require('socket.io')(server, socketCorsOptions);
+
+//this allows us to access io from inside express routes via req.app.get('socketio')
+app.set('socketio', io);
 
 //socket handling
 io.on('connection', function (socket) {

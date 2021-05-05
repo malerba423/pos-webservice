@@ -8,16 +8,6 @@ module.exports = function ({ socket, io }) {
     io.sockets.emit('orders/get_data', data);
   });
 
-  socket.on('orders/new_order', async (order) => {
-    const orderFromDB = await ordersService.addNewOrder({ order });
-    const queue = await ordersService.getActiveOrdersTodaySorted();
-    io.sockets.emit('order/order_data', orderFromDB); //update individual order
-    io.sockets.emit('orders/requery_initial_data');
-    if (queue.length) {
-      io.sockets.emit('orders/current_queue', queue);
-    }
-  });
-
   socket.on('orders/update_order', async (order) => {
     await ordersService.updateOrder({ order });
     const queue = await ordersService.getActiveOrdersTodaySorted();
