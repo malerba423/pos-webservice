@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
-const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
+const authRoutes = require('./auth/auth-routes');
+const { NODE_ENV, DEV_HOST, PORT, REACT_WEBAPP_BASE_URL } = require('./config');
 
 const appCorsOptions = {
   origin: REACT_WEBAPP_BASE_URL,
@@ -14,14 +15,23 @@ const socketCorsOptions = {
 };
 
 const app = express();
-app.use(cookieParser());
+app.use(function (req, res, next) {
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
+//app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(appCorsOptions));
 app.use('/stripe', stripeRoutes);
+app.use('/auth', authRoutes);
 
 //set up server and socket
-const server = app.listen(PORT, () => console.log('Listening on port: ' + PORT));
+const server =
+  NODE_ENV == 'local_development'
+    ? app.listen(PORT, DEV_HOST, () => console.log('Listening on port: ' + PORT))
+    : app.listen(PORT, () => console.log('Listening on port: ' + PORT));
+
 const io = require('socket.io')(server, socketCorsOptions);
 
 //socket handling
