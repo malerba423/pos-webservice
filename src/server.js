@@ -5,6 +5,7 @@ const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
 const ordersRoutes = require('./orders/orders-routes');
 const authRoutes = require('./auth/auth-routes');
+const adminRoutes = require('./administration/admin-routes');
 const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
 
 const appCorsOptions = {
@@ -28,6 +29,7 @@ app.use(cors(appCorsOptions));
 app.use('/stripe', stripeRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
+app.use('/administration', adminRoutes);
 
 //set up server and socket
 // const server =
