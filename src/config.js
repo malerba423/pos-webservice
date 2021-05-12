@@ -6,6 +6,7 @@ const configVars = {
     NEW: 'NEW',
     DONE: 'DONE',
     CANCELLED: 'CANCELLED',
+    IN_PROGRESS: 'IN PROGRESS',
   },
 };
 

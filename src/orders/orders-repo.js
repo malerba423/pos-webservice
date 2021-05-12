@@ -20,7 +20,10 @@ exports.getOrdersToday = async function () {
 
 exports.getActiveOrdersTodaySorted = async function () {
   const res = await db('orders')
-    .whereRaw('order_status = :status_new and inserted_at >= now()::date', { status_new: ORDER_STATUS.NEW })
+    .whereRaw('order_status IN (:status_new, :status_progress) and inserted_at >= now()::date', {
+      status_new: ORDER_STATUS.NEW,
+      status_progress: ORDER_STATUS.IN_PROGRESS,
+    })
     .orderBy('inserted_at', 'asc');
   return res;
 };
