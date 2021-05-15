@@ -2,7 +2,12 @@ const db = require('../database');
 const { ORDER_STATUS } = require('../config');
 
 function mapOrderGoingIntoDB(order) {
-  return { ...order, items: JSON.stringify(order.items), tip: JSON.stringify(order.tip) };
+  const mapped = {
+    ...order,
+    items: JSON.stringify(order.items),
+    tip: JSON.stringify(order.tip),
+  };
+  return mapped;
 }
 
 exports.addNewOrder = async function ({ order }) {
