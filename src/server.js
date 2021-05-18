@@ -3,6 +3,7 @@ const cors = require('cors');
 //const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
+const elavonRoutes = require('./elavon/elavon-routes');
 const ordersRoutes = require('./orders/orders-routes');
 const authRoutes = require('./auth/auth-routes');
 const adminRoutes = require('./administration/admin-routes');
@@ -27,6 +28,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors(appCorsOptions));
 
 app.use('/stripe', stripeRoutes);
+app.use('/elavon', elavonRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 app.use('/administration', adminRoutes);
