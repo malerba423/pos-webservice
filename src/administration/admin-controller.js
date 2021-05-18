@@ -10,3 +10,14 @@ exports.areWeCurrentlyOpen = async function (req, res) {
     });
   }
 };
+
+exports.getMenu = async function (req, res) {
+  try {
+    let resp = await adminService.getMenu();
+    res.send(resp);
+  } catch (e) {
+    return res.status(500).json({
+      message: 'An error occured during the getMenu process',
+    });
+  }
+};
