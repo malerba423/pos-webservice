@@ -5,31 +5,29 @@ const vendorID = 'sc777033'; //Vendor ID
 const tranactionTokenURL = 'https://api.demo.convergepay.com/hosted-payments/transaction_token'; // URL to Converge demo session token server
 const axios = require('axios');
 
-exports.getTransactionToken = async function ({
-  ssl_first_name,
-  ssl_last_name,
-  ssl_amount,
-  ssl_avs_address,
-  ssl_avs_zip,
-}) {
-  const payload = {
-    ssl_first_name,
-    ssl_last_name,
-    ssl_amount,
-    ssl_avs_address,
-    ssl_avs_zip,
-    ssl_get_token: 'Y',
-    ssl_add_token: 'Y',
-    ssl_merchant_id: merchantID,
-    ssl_user_id: merchantUserID,
-    ssl_pin: merchantPIN,
-    ssl_vendor_id: vendorID,
-    ssl_transaction_type: 'ccsale',
-    ssl_verify: false,
+exports.getTransactionToken = async function (props) {
+  const params = new URLSearchParams();
+  params.append('ssl_first_name', props?.ssl_first_name);
+  params.append('ssl_last_name', props?.ssl_last_name);
+  params.append('ssl_amount', props?.ssl_amount);
+  params.append('ssl_avs_address', props?.ssl_avs_address);
+  params.append('ssl_avs_zip', props?.ssl_avs_zip);
+  params.append('ssl_get_token', 'Y');
+  params.append('ssl_add_token', 'Y');
+  params.append('ssl_merchant_id', merchantID);
+  params.append('ssl_user_id', merchantUserID);
+  params.append('ssl_pin', merchantPIN);
+  params.append('ssl_vendor_id', vendorID);
+  params.append('ssl_transaction_type', 'ccsale');
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   };
 
-  const tokenResult = await axios.post(tranactionTokenURL, payload);
-  return tokenResult;
+  const tokenResult = await axios.post(tranactionTokenURL, params, config);
+  return tokenResult?.data;
 };
 
 exports.collectPayment = async function () {
