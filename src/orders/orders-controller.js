@@ -9,6 +9,7 @@ exports.addNewOrder = async function (req, res) {
     res.send({ order: orderResult });
 
     const queue = await ordersService.getActiveOrdersTodaySorted();
+    io.sockets.emit('order/notify_kitchen_of_new_order');
     io.sockets.emit('orders/current_queue', queue);
     io.sockets.emit('orders/requery_initial_data');
   } catch (e) {
