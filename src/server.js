@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const babelPolyfill = require('@babel/polyfill');
 //const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
