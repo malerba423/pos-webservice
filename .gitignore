@@ -7,6 +7,9 @@ node_modules
 .env.test.local
 .env.production.local
 
+# build folder
+build/*
+
 # Elastic Beanstalk Files
 .ebextensions/*
 .elasticbeanstalk/*

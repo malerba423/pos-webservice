@@ -3,9 +3,15 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./src/server.js"
+    "startdev": "node ./src/server.js",
+    "build": "babel -d ./build ./src",
+    "prebuild": "rm -rf build/*",
+    "start": "NODE_ENV=production node ./build/server.js",
+    "prestart": "npm run build"
   },
   "dependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
     "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
