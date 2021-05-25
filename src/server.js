@@ -28,6 +28,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors(appCorsOptions));
 
+app.get('/', (req, res) => res.send('Health check OK'));
+app.get('/test', (req, res) => res.send('Health check OK'));
 app.use('/stripe', stripeRoutes);
 app.use('/elavon', elavonRoutes);
 app.use('/orders', ordersRoutes);
