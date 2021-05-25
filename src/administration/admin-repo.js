@@ -6,20 +6,9 @@ exports.areWeCurrentlyOpen = async function () {
 };
 
 exports.getMenu = async function () {
-  console.log('aaaa');
-  console.log(db.client.connectionSettings);
-
-  const query = db('items').select('*');
-  console.log(query.toString());
-
-  const res1 = await query;
-  console.log('bbbb');
-
+  const res1 = await db('items').select('*');
   const res2 = await db('item_options').select('*');
-  console.log('cccc');
-
   const res3 = await db('menu_groupings').select('*').orderBy('index', 'asc');
-  console.log('dddd');
 
   const response = {
     items: res1,
