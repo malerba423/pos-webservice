@@ -7,7 +7,8 @@
     "build": "babel -d ./build ./src",
     "prebuild": "rm -rf build/*",
     "start": "NODE_ENV=production node ./build/server.js",
-    "prestart": "npm run build"
+    "prestart": "npm run build",
+    "deploy:test": "eb deploy test"
   },
   "dependencies": {
     "@babel/cli": "^7.0.0",
