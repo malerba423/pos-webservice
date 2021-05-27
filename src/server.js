@@ -8,14 +8,14 @@ const elavonRoutes = require('./elavon/elavon-routes');
 const ordersRoutes = require('./orders/orders-routes');
 const authRoutes = require('./auth/auth-routes');
 const adminRoutes = require('./administration/admin-routes');
-const { PORT, REACT_WEBAPP_BASE_URL } = require('./config');
+const { PORT, REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL } = require('./config');
 
 const appCorsOptions = {
-  origin: REACT_WEBAPP_BASE_URL,
+  origin: [REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL],
 };
 const socketCorsOptions = {
   cors: true,
-  origins: [REACT_WEBAPP_BASE_URL],
+  origins: [REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL],
 };
 
 const app = express();

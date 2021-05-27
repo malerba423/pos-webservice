@@ -12,6 +12,7 @@ const envVars = {
   JWT_ALGORITHM: process.env.JWT_ALGORITHM,
   DEV_HOST: process.env.DEV_HOST,
   REACT_WEBAPP_BASE_URL: process.env.REACT_WEBAPP_BASE_URL,
+  KITCHEN_BASE_URL: process.env.KITCHEN_BASE_URL,
 };
 
 const constants = {
