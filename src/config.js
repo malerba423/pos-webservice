@@ -13,6 +13,7 @@ const envVars = {
   DEV_HOST: process.env.DEV_HOST,
   REACT_WEBAPP_BASE_URL: process.env.REACT_WEBAPP_BASE_URL,
   KITCHEN_BASE_URL: process.env.KITCHEN_BASE_URL,
+  TZ: process.env.TZ,
 };
 
 const constants = {
