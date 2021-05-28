@@ -1,5 +1,5 @@
 const db = require('../database');
-const { ORDER_STATUS } = require('../config');
+const { ORDER_STATUS, TZ } = require('../config');
 
 function mapOrderGoingIntoDB(order) {
   for (var i of order.items) {
@@ -35,17 +35,23 @@ exports.updateOrder = async function ({ order }) {
 };
 
 exports.getOrdersToday = async function () {
-  let orders = await db('orders').whereRaw('inserted_at >= now()::date');
+  let orders = await db('orders').whereRaw('inserted_at >= (now()::timestamp at time zone :TZ)::date', {
+    TZ: TZ,
+  });
   orders = mapOrdersComingOutOfDB(orders);
   return orders;
 };
 
 exports.getActiveOrdersTodaySorted = async function () {
   let orders = await db('orders')
-    .whereRaw('order_status IN (:status_new, :status_progress) and inserted_at >= now()::date', {
-      status_new: ORDER_STATUS.NEW,
-      status_progress: ORDER_STATUS.IN_PROGRESS,
-    })
+    .whereRaw(
+      'order_status IN (:status_new, :status_progress) and inserted_at >= (now()::timestamp at time zone :TZ)::date',
+      {
+        status_new: ORDER_STATUS.NEW,
+        status_progress: ORDER_STATUS.IN_PROGRESS,
+        TZ: TZ,
+      },
+    )
     .orderBy('inserted_at', 'asc');
 
   orders = mapOrdersComingOutOfDB(orders);
