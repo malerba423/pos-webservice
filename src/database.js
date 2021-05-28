@@ -1,13 +1,14 @@
 const knex = require('knex');
-const { DATABASE_URL } = require('./config');
+const { DATABASE_URL, TZ } = require('./config');
 
 const db = knex({
   client: 'pg',
   connection: DATABASE_URL,
   pool: {
     min: 1,
-    max: 7,
+    max: 15,
   },
+  localTimezone: TZ,
   searchPath: ['foodtruck', 'public'],
 });
 
