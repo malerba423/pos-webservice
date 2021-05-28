@@ -1,5 +1,5 @@
 const db = require('../database');
-const { ORDER_STATUS, TZ } = require('../config');
+const { ORDER_STATUS } = require('../config');
 
 function mapOrderGoingIntoDB(order) {
   for (var i of order.items) {

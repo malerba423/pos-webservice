@@ -8,7 +8,7 @@ const db = knex({
     min: 1,
     max: 15,
     afterCreate: function (connection, callback) {
-      connection.query("SET timezone = 'America/Los_Angeles';", function (err) {
+      connection.query(`SET timezone = '${TZ}';`, function (err) {
         callback(err, connection);
       });
     },
