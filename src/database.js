@@ -8,7 +8,7 @@ const db = knex({
     min: 1,
     max: 15,
   },
-  localTimezone: TZ,
+  timezone: TZ,
   searchPath: ['foodtruck', 'public'],
 });
 
