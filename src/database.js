@@ -7,8 +7,12 @@ const db = knex({
   pool: {
     min: 1,
     max: 15,
+    afterCreate: function (connection, callback) {
+      connection.query("SET time_zone = 'America/Los_Angeles';", function (err) {
+        callback(err, connection);
+      });
+    },
   },
-  timezone: TZ,
   searchPath: ['foodtruck', 'public'],
 });
 

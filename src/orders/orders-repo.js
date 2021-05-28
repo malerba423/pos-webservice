@@ -35,26 +35,17 @@ exports.updateOrder = async function ({ order }) {
 };
 
 exports.getOrdersToday = async function () {
-  let orders = await db('orders').whereRaw(
-    'inserted_at >= (now()::timestamp with time zone at time zone :TZ)::date',
-    {
-      TZ: TZ,
-    },
-  );
+  let orders = await db('orders').whereRaw('inserted_at >= now()::date');
   orders = mapOrdersComingOutOfDB(orders);
   return orders;
 };
 
 exports.getActiveOrdersTodaySorted = async function () {
   let orders = await db('orders')
-    .whereRaw(
-      'order_status IN (:status_new, :status_progress) and inserted_at >= (now()::timestamp with time zone at time zone :TZ)::date',
-      {
-        status_new: ORDER_STATUS.NEW,
-        status_progress: ORDER_STATUS.IN_PROGRESS,
-        TZ: TZ,
-      },
-    )
+    .whereRaw('order_status IN (:status_new, :status_progress) and inserted_at >= now()::date', {
+      status_new: ORDER_STATUS.NEW,
+      status_progress: ORDER_STATUS.IN_PROGRESS,
+    })
     .orderBy('inserted_at', 'asc');
 
   orders = mapOrdersComingOutOfDB(orders);
