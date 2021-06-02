@@ -5,6 +5,14 @@ exports.areWeCurrentlyOpen = async function () {
   return val;
 };
 
+exports.updateItem = async function ({ item }) {
+  const itemForUpdate = {
+    sold_out: item.sold_out,
+    active: item.active,
+  };
+  return await db('items').where({ id: item.id }).update(itemForUpdate);
+};
+
 exports.getMenu = async function () {
   const res1 = await db('items').select('*');
   const res2 = await db('item_options').select('*');

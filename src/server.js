@@ -3,6 +3,7 @@ const cors = require('cors');
 const babelPolyfill = require('@babel/polyfill');
 //const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
+const handleAdminRequests = require('./administration/admin-handler');
 const stripeRoutes = require('./stripe/stripe-routes');
 const elavonRoutes = require('./elavon/elavon-routes');
 const ordersRoutes = require('./orders/orders-routes');
@@ -51,6 +52,7 @@ app.set('socketio', io);
 io.on('connection', function (socket) {
   console.log('client connected ' + socket.id);
 
+  handleAdminRequests({ socket, io });
   handleOrdersRequests({ socket, io });
 
   // disconnect is fired when a client leaves the server
