@@ -12,3 +12,8 @@ exports.updateItem = async function ({ item }) {
   const result = await adminRepo.updateItem({ item });
   return result;
 };
+
+exports.updateItemOption = async function ({ option }) {
+  const result = await adminRepo.updateItemOption({ option });
+  return result;
+};

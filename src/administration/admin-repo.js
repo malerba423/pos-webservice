@@ -13,6 +13,14 @@ exports.updateItem = async function ({ item }) {
   return await db('items').where({ id: item.id }).update(itemForUpdate);
 };
 
+exports.updateItemOption = async function ({ option }) {
+  const optionForUpdate = {
+    sold_out: option.sold_out,
+    active: option.active,
+  };
+  return await db('item_options').where({ id: option.id }).update(optionForUpdate);
+};
+
 exports.getMenu = async function () {
   const res1 = await db('items').select('*');
   const res2 = await db('item_options').select('*');
