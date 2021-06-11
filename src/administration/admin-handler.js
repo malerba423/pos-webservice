@@ -13,4 +13,10 @@ module.exports = function ({ socket, io }) {
     const menu = await adminService.getMenu();
     io.sockets.emit('menu/updated_menu_data', menu);
   });
+
+  socket.on('items/create_item', async (item) => {
+    await adminService.createItem({ item });
+    const menu = await adminService.getMenu();
+    io.sockets.emit('menu/updated_menu_data', menu);
+  });
 };

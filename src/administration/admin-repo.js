@@ -13,6 +13,12 @@ exports.updateItem = async function ({ item }) {
   return await db('items').where({ id: item.id }).update(itemForUpdate);
 };
 
+exports.createItem = async function ({ item }) {
+  item.default_options = JSON.stringify(item.default_options);
+  item.available_options = JSON.stringify(item.available_options);
+  return await db('items').insert(item);
+};
+
 exports.updateItemOption = async function ({ option }) {
   const optionForUpdate = {
     sold_out: option.sold_out,
