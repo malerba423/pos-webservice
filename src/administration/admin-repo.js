@@ -19,6 +19,10 @@ exports.createItem = async function ({ item }) {
   return await db('items').insert(item);
 };
 
+exports.createItemOptions = async function ({ optionsArray }) {
+  return await db('item_options').insert(optionsArray);
+};
+
 exports.updateItemOption = async function ({ option }) {
   const optionForUpdate = {
     sold_out: option.sold_out,
