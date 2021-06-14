@@ -23,6 +23,7 @@ const constants = {
     CANCELLED: 'CANCELLED',
     IN_PROGRESS: 'IN PROGRESS',
   },
+  MENU_IMAGES_PATH: '/public/images/menu/',
 };
 
 module.exports = {

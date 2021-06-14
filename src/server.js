@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const babelPolyfill = require('@babel/polyfill');
+const appRoot = require('app-root-path');
 //const cookieParser = require('cookie-parser');
 const handleOrdersRequests = require('./orders/orders-handler');
 const handleAdminRequests = require('./administration/admin-handler');
@@ -9,7 +10,7 @@ const elavonRoutes = require('./elavon/elavon-routes');
 const ordersRoutes = require('./orders/orders-routes');
 const authRoutes = require('./auth/auth-routes');
 const adminRoutes = require('./administration/admin-routes');
-const { PORT, REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL } = require('./config');
+const { PORT, REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL, MENU_IMAGES_PATH } = require('./config');
 
 const appCorsOptions = {
   origin: [REACT_WEBAPP_BASE_URL, KITCHEN_BASE_URL],
@@ -35,6 +36,7 @@ app.use('/elavon', elavonRoutes);
 app.use('/orders', ordersRoutes);
 app.use('/auth', authRoutes);
 app.use('/administration', adminRoutes);
+app.use(MENU_IMAGES_PATH, express.static(appRoot + MENU_IMAGES_PATH));
 
 //set up server and socket
 // const server =
@@ -61,10 +63,10 @@ io.on('connection', function (socket) {
   });
 });
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
-});
+// // catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
 app.use(function (err, req, res, next) {
