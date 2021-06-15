@@ -23,6 +23,11 @@ exports.createItem = async function ({ item }) {
   return result;
 };
 
+exports.editItem = async function ({ item }) {
+  const result = await adminRepo.editItem({ item });
+  return result;
+};
+
 exports.createItemOptions = async function ({ optionsArray }) {
   const result = await adminRepo.createItemOptions({ optionsArray });
   return result;

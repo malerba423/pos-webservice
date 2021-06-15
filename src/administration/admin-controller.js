@@ -36,3 +36,18 @@ exports.createItem = async function (req, res) {
     });
   }
 };
+
+exports.editItem = async function (req, res) {
+  try {
+    const io = req.app.get('socketio');
+    const item = req.body.item;
+    await adminService.editItem({ item });
+    const menu = await adminService.getMenu();
+    io.sockets.emit('menu/updated_menu_data', menu);
+    res.status(200);
+  } catch (e) {
+    return res.status(500).json({
+      message: 'An error occured during the getMenu process',
+    });
+  }
+};

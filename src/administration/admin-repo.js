@@ -19,6 +19,14 @@ exports.createItem = async function ({ item }) {
   return await db('items').insert(item);
 };
 
+exports.editItem = async function ({ item }) {
+  const { id } = item;
+  delete item.id;
+  item.default_options = JSON.stringify(item.default_options);
+  item.available_options = JSON.stringify(item.available_options);
+  return await db('items').update(item).where({ id });
+};
+
 exports.createItemOptions = async function ({ optionsArray }) {
   return await db('item_options').insert(optionsArray);
 };
