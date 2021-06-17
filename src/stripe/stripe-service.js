@@ -3,7 +3,10 @@ const stripe = require('stripe')(STRIPE_SECRET_KEY);
 
 exports.calculateOrderAmount = function (items) {
   //TODO: look up item price in DB and use that rather than trusting price data sent from client
-  const dollarSum = items.reduce((a, b) => a + Number(b.price || b.chosen_options[0].price || 0), 0);
+  const dollarSum = items.reduce((a, b) => {
+    const bPrice = b.is_nocharge ? 0 : Number(b.price) || Number(b.chosen_options[0].price) || 0;
+    return a + bPrice;
+  }, 0);
   const dollarSumAfterTax = dollarSum * (1 + Number(SALES_TAX_RATE));
   const penniesSumAfterTax = Math.round(dollarSumAfterTax * 100); //stripe expects number of pennies, so multiply by 100
   return penniesSumAfterTax;

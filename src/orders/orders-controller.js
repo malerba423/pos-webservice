@@ -5,6 +5,10 @@ exports.addNewOrder = async function (req, res) {
   const io = req.app.get('socketio');
 
   try {
+    order.items = order.items.map((i) => {
+      delete i.image_src_base64;
+      return i;
+    });
     const orderResult = await ordersService.addNewOrder({ order });
     res.send({ order: orderResult });
 
