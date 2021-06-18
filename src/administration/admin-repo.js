@@ -51,3 +51,11 @@ exports.getMenu = async function () {
   };
   return response;
 };
+
+exports.openStore = async function () {
+  return await db('hours_of_operation_overrides').update({ currently_taking_orders: true });
+};
+
+exports.closeStore = async function () {
+  return await db('hours_of_operation_overrides').update({ currently_taking_orders: false });
+};

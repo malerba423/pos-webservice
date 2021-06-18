@@ -32,3 +32,13 @@ exports.createItemOptions = async function ({ optionsArray }) {
   const result = await adminRepo.createItemOptions({ optionsArray });
   return result;
 };
+
+exports.openStore = async function () {
+  const result = await adminRepo.openStore();
+  return result;
+};
+
+exports.closeStore = async function () {
+  const result = await adminRepo.closeStore();
+  return result;
+};

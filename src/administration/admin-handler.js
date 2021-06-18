@@ -19,4 +19,14 @@ module.exports = function ({ socket, io }) {
     const menu = await adminService.getMenu();
     io.sockets.emit('menu/updated_menu_data', menu);
   });
+
+  socket.on('store/open_store', async () => {
+    await adminService.openStore();
+    io.sockets.emit('store/store_open_status_updated', { open: true });
+  });
+
+  socket.on('store/close_store', async () => {
+    await adminService.closeStore();
+    io.sockets.emit('store/store_open_status_updated', { open: false });
+  });
 };
