@@ -29,7 +29,7 @@ exports.createItem = async function (req, res) {
     await adminService.createItem({ item });
     const menu = await adminService.getMenu();
     io.sockets.emit('menu/updated_menu_data', menu);
-    res.status(200);
+    res.status(200).json({ success: true });
   } catch (e) {
     return res.status(500).json({
       message: 'An error occured during the getMenu process',
@@ -44,7 +44,7 @@ exports.editItem = async function (req, res) {
     await adminService.editItem({ item });
     const menu = await adminService.getMenu();
     io.sockets.emit('menu/updated_menu_data', menu);
-    res.status(200);
+    res.status(200).json({ success: true });
   } catch (e) {
     return res.status(500).json({
       message: 'An error occured during the getMenu process',
