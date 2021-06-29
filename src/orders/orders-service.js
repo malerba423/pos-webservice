@@ -1,6 +1,8 @@
 const ordersRepo = require('./orders-repo');
 
 exports.addNewOrder = async function ({ order }) {
+  const currentQueue = await ordersRepo.getActiveOrdersTodaySorted();
+  order.queue_length = (currentQueue?.length || 0) + 1;
   const result = await ordersRepo.addNewOrder({ order });
   return result;
 };
