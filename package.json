@@ -2,13 +2,17 @@
   "name": "pos-webservice",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=15.14.0"
+  },
+  "engineStrict": true,
   "scripts": {
     "startdev": "node ./src/server.js",
     "build": "babel -d ./build ./src",
     "prebuild": "rm -rf build/*",
     "start": "NODE_ENV=production node ./build/server.js",
     "prestart": "npm run build",
-    "deploy:test": "eb deploy test"
+    "deploy:test": "eb deploy test-v2"
   },
   "dependencies": {
     "@babel/cli": "^7.0.0",
